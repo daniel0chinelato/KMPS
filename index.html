@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K.M.P.S | Comunidade de Torneios de Age of Mythology</title>
+    <meta name="description" content="K.M.P.S — comunidade de torneios de Age of Mythology: Retold. Acompanhe os torneios, canais parceiros, produtos oficiais e dicas de mapas.">
+    <link rel="icon" type="image/jpeg" href="favicon.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/torneios-carousel.css">
+    <link rel="stylesheet" href="css/dicas.css">
+    <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+    <div id="homeEmbers"></div>
+
+    <!-- ===== MENU FIXO NO TOPO ===== -->
+    <nav class="navbar">
+        <a class="navbar-logo" href="#hero" data-home="true">K.M.<span>P.S</span></a>
+        <ul class="navbar-links" id="navbarLinks">
+            <li><a href="#hero" data-home="true">Início</a></li>
+            <li><a href="#torneios">Torneios</a></li>
+            <li><a href="#canais">Canais</a></li>
+            <li><a href="#atualizacoes">Atualizações</a></li>
+            <li><a href="#produtos">Nossos Produtos</a></li>
+            <li><a href="#dicas">Dicas</a></li>
+            <li><a href="#stream-tools">Ferramentas para Stream</a></li>
+        </ul>
+        <button class="navbar-burger" id="navbarBurger" onclick="toggleMenu()" aria-label="Abrir menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ===== MENU FLUTUANTE DE REDES SOCIAIS ===== -->
+    <div class="social-float">
+        <a href="#" id="socialTwitch" target="_blank" rel="noopener noreferrer" aria-label="Twitch" title="Twitch">
+            <svg viewBox="0 0 24 24"><path d="M4 2 2 7v13h6v2h4l2-2h5l4-4V2H4zm18 12-3 3h-5l-2 2v-2H6V4h16v10z"/><path d="M15 7h2v5h-2zM9.5 7h2v5h-2z"/></svg>
+        </a>
+        <a href="#" id="socialYoutube" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M22 12s0-3.4-.4-5a2.8 2.8 0 0 0-2-2C17.9 4.5 12 4.5 12 4.5s-5.9 0-7.6.5a2.8 2.8 0 0 0-2 2C2 8.6 2 12 2 12s0 3.4.4 5a2.8 2.8 0 0 0 2 2c1.7.5 7.6.5 7.6.5s5.9 0 7.6-.5a2.8 2.8 0 0 0 2-2c.4-1.6.4-5 .4-5zM10 15V9l5.2 3z"/></svg>
+        </a>
+        <a href="#" id="socialInstagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2c-2.7 0-3.06.01-4.12.06-1.06.05-1.79.22-2.43.47a4.9 4.9 0 0 0-1.77 1.15A4.9 4.9 0 0 0 2.53 5.45c-.25.64-.42 1.37-.47 2.43C2.01 8.94 2 9.3 2 12s.01 3.06.06 4.12c.05 1.06.22 1.79.47 2.43a4.9 4.9 0 0 0 1.15 1.77 4.9 4.9 0 0 0 1.77 1.15c.64.25 1.37.42 2.43.47C8.94 21.99 9.3 22 12 22s3.06-.01 4.12-.06c1.06-.05 1.79-.22 2.43-.47a4.9 4.9 0 0 0 1.77-1.15 4.9 4.9 0 0 0 1.15-1.77c.25-.64.42-1.37.47-2.43.05-1.06.06-1.42.06-4.12s-.01-3.06-.06-4.12c-.05-1.06-.22-1.79-.47-2.43a4.9 4.9 0 0 0-1.15-1.77A4.9 4.9 0 0 0 18.55 2.53c-.64-.25-1.37-.42-2.43-.47C15.06 2.01 14.7 2 12 2zm0 1.8c2.65 0 2.97.01 4.02.06.97.04 1.5.2 1.85.34.46.18.79.4 1.14.75.35.35.57.68.75 1.14.14.35.3.88.34 1.85.05 1.05.06 1.37.06 4.02s-.01 2.97-.06 4.02c-.04.97-.2 1.5-.34 1.85-.18.46-.4.79-.75 1.14-.35.35-.68.57-1.14.75-.35.14-.88.3-1.85.34-1.05.05-1.37.06-4.02.06s-2.97-.01-4.02-.06c-.97-.04-1.5-.2-1.85-.34a3.1 3.1 0 0 1-1.14-.75 3.1 3.1 0 0 1-.75-1.14c-.14-.35-.3-.88-.34-1.85C3.81 14.97 3.8 14.65 3.8 12s.01-2.97.06-4.02c.04-.97.2-1.5.34-1.85.18-.46.4-.79.75-1.14.35-.35.68-.57 1.14-.75.35-.14.88-.3 1.85-.34C9.03 3.81 9.35 3.8 12 3.8zm0 3.05a5.15 5.15 0 1 0 0 10.3 5.15 5.15 0 0 0 0-10.3zm0 8.5a3.35 3.35 0 1 1 0-6.7 3.35 3.35 0 0 1 0 6.7zm6.55-8.7a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/></svg>
+        </a>
+    </div>
+
+    <!-- ===== HEADER (mantido como está hoje) ===== -->
+    <section id="hero" style="padding: 0;">
+        <div class="home-hero">
+            <div class="home-hero-img-wrap">
+                <img src="header.png" alt="K.M.P.S" class="home-hero-img" onerror="this.style.display='none'">
+            </div>
+            <div class="kmps-watermark-wrap">
+                <img src="Union.png" alt="KMPS" class="kmps-watermark-img" onerror="this.style.display='none'">
+                <div class="home-logo-badge"><img src="KMPS_v2.png" alt="KMPS" onerror="this.parentElement.innerHTML='&lt;span&gt;KMPS&lt;/span&gt;'"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CANAIS EM DESTAQUE ===== -->
+    <section id="canais">
+        <div class="container">
+            <h2 class="section-title">Canais em Destaque</h2>
+            <div class="channels-grid" id="canaisDestaqueList"></div>
+        </div>
+    </section>
+
+    <!-- ===== ATUALIZAÇÕES (dentro de um box, com respiro do resto da página) ===== -->
+    <section id="atualizacoes">
+        <div class="container">
+            <h2 class="section-title">Atualizações</h2>
+            <div class="updates-box">
+                <div class="featured-news" id="featuredNewsContainer">
+                    <img class="featured-news-img" id="featuredNewsImg" src="" alt="">
+                    <div>
+                        <h3 class="featured-news-title" id="featuredNewsTitle">Latest News</h3>
+                        <p class="featured-news-text" id="featuredNewsText"></p>
+                        <a class="featured-news-link" id="featuredNewsLink" href="#" target="_blank" rel="noopener noreferrer">Ver mais +</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== NOSSOS PRODUTOS ===== -->
+    <section id="produtos">
+        <div class="container">
+            <h2 class="section-title">Nossos Produtos</h2>
+            <div class="products-grid" id="produtosList"></div>
+            <div class="ver-mais-wrap"><a href="#" id="produtosVerMaisLink" target="_blank" rel="noopener noreferrer">Ver mais +</a></div>
+        </div>
+    </section>
+
+    <!-- ===== TORNEIOS — cards quadrados, em carrossel ===== -->
+    <section id="torneios">
+        <div class="container">
+            <h2 class="section-title">Torneios KMPS</h2>
+            <div class="carousel-wrap">
+                <button class="carousel-arrow prev" onclick="scrollarCarrossel('torneiosList', -1)" aria-label="Torneio anterior">‹</button>
+                <div class="carousel-track" id="torneiosList"></div>
+                <button class="carousel-arrow next" onclick="scrollarCarrossel('torneiosList', 1)" aria-label="Próximo torneio">›</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DICAS — mapas; cada um abre as dicas no torneio Tavernas ===== -->
+    <section id="dicas">
+        <div class="container">
+            <h2 class="section-title">Dicas de Mapas</h2>
+            <div class="dicas-grid" id="dicasList"></div>
+        </div>
+    </section>
+
+    <!-- ===== FERRAMENTAS PARA STREAM (em breve) ===== -->
+    <section id="stream-tools">
+        <div class="container">
+            <h2 class="section-title">Ferramentas para Stream</h2>
+            <div class="placeholder-box">Em breve</div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="footer-bg-carousel" id="footerBgCarousel"></div>
+        <div class="footer-credit">Desenvolvido pela equipe K.M.P.S</div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/carousels.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('socialTwitch').href = socialLinks.twitch;
+        document.getElementById('socialYoutube').href = socialLinks.youtube;
+        document.getElementById('socialInstagram').href = socialLinks.instagram;
+    </script>
+</body>
+</html>

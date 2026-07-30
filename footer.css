@@ -1,0 +1,25 @@
+/* ==========================================================================
+   FOOTER.CSS — mesma ideia visual de hoje (imagem grande no rodapé),
+   porém a imagem agora é um carrossel automático com dissolve,
+   e os links foram removidos — só o crédito da equipe fica.
+   ========================================================================== */
+
+.site-footer { position: relative; width: 100%; height: 480px; overflow: hidden; margin-top: 40px; }
+.footer-bg-carousel { position: absolute; inset: 0; }
+.footer-bg-slide {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transition: opacity 1.6s ease-in-out;
+}
+.footer-bg-slide.active { opacity: 1; }
+.site-footer::before {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, var(--bg-color) 0%, transparent 20%, transparent 70%, var(--bg-color) 100%);
+    pointer-events: none;
+}
+.footer-credit {
+    position: absolute; left: 0; right: 0; bottom: 18px; z-index: 2;
+    text-align: center; font-size: 0.7rem; color: var(--text-muted);
+    letter-spacing: 4px; font-weight: 300; text-transform: uppercase;
+}
+
+@media (max-width: 700px) { .site-footer { height: 300px; } }
