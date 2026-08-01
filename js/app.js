@@ -85,10 +85,8 @@
         }
         function abrirDicaMapa(nome) {
             irParaPagina('page-maps');
-            setTimeout(() => {
-                atualizarPainelMapas(nome);
-                if (!mostrandoDicas) toggleDicas();
-            }, 250);
+            atualizarPainelMapas(nome);
+            if (!mostrandoDicas) toggleDicas();
         }
         const mapaImagens = {
             "Acrópole": "acropole.jpg",
