@@ -4,55 +4,166 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K.M.P.S | Comunidade de Torneios de Age of Mythology</title>
-    <meta name="description" content="K.M.P.S — comunidade de torneios de Age of Mythology: Retold. Acompanhe os torneios, canais parceiros, produtos oficiais e dicas de mapas.">
+    <meta name="description" content="K.M.P.S — comunidade de torneios de Age of Mythology: Retold. Acompanhe os torneios, chaveamentos, ranking ELO, canais parceiros e produtos oficiais.">
     <link rel="icon" type="image/jpeg" href="favicon.jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/sections.css">
-    <link rel="stylesheet" href="css/torneios-carousel.css">
-    <link rel="stylesheet" href="css/dicas.css">
-    <link rel="stylesheet" href="css/footer.css">
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-    <div id="homeEmbers"></div>
-
-    <!-- ===== MENU FIXO NO TOPO ===== -->
-    <nav class="navbar">
-        <a class="navbar-logo" href="#hero" data-home="true">K.M.<span>P.S</span></a>
-        <ul class="navbar-links" id="navbarLinks">
-            <li><a href="#hero" data-home="true">Início</a></li>
-            <li><a href="#torneios">Torneios</a></li>
-            <li><a href="#canais">Canais</a></li>
-            <li><a href="#atualizacoes">Atualizações</a></li>
-            <li><a href="#produtos">Nossos Produtos</a></li>
-            <li><a href="#dicas">Dicas</a></li>
-            <li><a href="#stream-tools">Ferramentas para Stream</a></li>
-        </ul>
-        <button class="navbar-burger" id="navbarBurger" onclick="toggleMenu()" aria-label="Abrir menu">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
-
-    <!-- ===== MENU FLUTUANTE DE REDES SOCIAIS ===== -->
+    <div id="initialLoadOverlay">
+        <div class="load-spinner"></div>
+        <div class="load-label">Carregando dados da Taverna...</div>
+    </div>
+    <div id="toastContainer"></div>
+    <button class="hamburger-btn" onclick="abrirMenuLateral()" title="Menu K.M.P.S">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="navbar">
+        <img src="KMPS_v2.png" alt="KMPS" class="navbar-logo-edge" onerror="this.style.display='none'">
+        <a class="nav-btn active" id="navBtnHome" href="index.html">Início</a>
+        <a class="nav-btn" id="navBtnMain" href="torneios.html">Torneios</a>
+        <a class="nav-btn" id="navBtnCanais" href="index.html#secaoCanais" onclick="if(document.getElementById('page-home').classList.contains('active')){irParaSecaoHome('secaoCanais', this); return false;}">Canais</a>
+        <a class="nav-btn" id="navBtnNews" href="index.html#secaoAtualizacoes" onclick="if(document.getElementById('page-home').classList.contains('active')){irParaSecaoHome('secaoAtualizacoes', this); return false;}">Atualizações</a>
+        <a class="nav-btn" id="navBtnProdutos" href="index.html#secaoProdutos" onclick="if(document.getElementById('page-home').classList.contains('active')){irParaSecaoHome('secaoProdutos', this); return false;}">Nossos Produtos</a>
+        <a class="nav-btn" id="navBtnDicas" href="index.html#secaoDicas" onclick="if(document.getElementById('page-home').classList.contains('active')){irParaSecaoHome('secaoDicas', this); return false;}">Dicas</a>
+        <a class="nav-btn" id="navBtnStream" href="index.html#secaoStream" onclick="if(document.getElementById('page-home').classList.contains('active')){irParaSecaoHome('secaoStream', this); return false;}">Ferramentas para Stream</a>
+    </div>
+    <!-- MENU FLUTUANTE DE REDES SOCIAIS -->
     <div class="social-float">
-        <a href="#" id="socialTwitch" target="_blank" rel="noopener noreferrer" aria-label="Twitch" title="Twitch">
+        <a href="https://www.twitch.tv/SEU_CANAL_AQUI" target="_blank" rel="noopener noreferrer" title="Twitch">
             <svg viewBox="0 0 24 24"><path d="M4 2 2 7v13h6v2h4l2-2h5l4-4V2H4zm18 12-3 3h-5l-2 2v-2H6V4h16v10z"/><path d="M15 7h2v5h-2zM9.5 7h2v5h-2z"/></svg>
         </a>
-        <a href="#" id="socialYoutube" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
+        <a href="https://www.youtube.com/@SEU_CANAL_AQUI" target="_blank" rel="noopener noreferrer" title="YouTube">
             <svg viewBox="0 0 24 24"><path d="M22 12s0-3.4-.4-5a2.8 2.8 0 0 0-2-2C17.9 4.5 12 4.5 12 4.5s-5.9 0-7.6.5a2.8 2.8 0 0 0-2 2C2 8.6 2 12 2 12s0 3.4.4 5a2.8 2.8 0 0 0 2 2c1.7.5 7.6.5 7.6.5s5.9 0 7.6-.5a2.8 2.8 0 0 0 2-2c.4-1.6.4-5 .4-5zM10 15V9l5.2 3z"/></svg>
         </a>
-        <a href="#" id="socialInstagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+        <a href="https://www.instagram.com/mdre.mandarecurso/" target="_blank" rel="noopener noreferrer" title="Instagram">
             <svg viewBox="0 0 24 24"><path d="M12 2c-2.7 0-3.06.01-4.12.06-1.06.05-1.79.22-2.43.47a4.9 4.9 0 0 0-1.77 1.15A4.9 4.9 0 0 0 2.53 5.45c-.25.64-.42 1.37-.47 2.43C2.01 8.94 2 9.3 2 12s.01 3.06.06 4.12c.05 1.06.22 1.79.47 2.43a4.9 4.9 0 0 0 1.15 1.77 4.9 4.9 0 0 0 1.77 1.15c.64.25 1.37.42 2.43.47C8.94 21.99 9.3 22 12 22s3.06-.01 4.12-.06c1.06-.05 1.79-.22 2.43-.47a4.9 4.9 0 0 0 1.77-1.15 4.9 4.9 0 0 0 1.15-1.77c.25-.64.42-1.37.47-2.43.05-1.06.06-1.42.06-4.12s-.01-3.06-.06-4.12c-.05-1.06-.22-1.79-.47-2.43a4.9 4.9 0 0 0-1.15-1.77A4.9 4.9 0 0 0 18.55 2.53c-.64-.25-1.37-.42-2.43-.47C15.06 2.01 14.7 2 12 2zm0 1.8c2.65 0 2.97.01 4.02.06.97.04 1.5.2 1.85.34.46.18.79.4 1.14.75.35.35.57.68.75 1.14.14.35.3.88.34 1.85.05 1.05.06 1.37.06 4.02s-.01 2.97-.06 4.02c-.04.97-.2 1.5-.34 1.85-.18.46-.4.79-.75 1.14-.35.35-.68.57-1.14.75-.35.14-.88.3-1.85.34-1.05.05-1.37.06-4.02.06s-2.97-.01-4.02-.06c-.97-.04-1.5-.2-1.85-.34a3.1 3.1 0 0 1-1.14-.75 3.1 3.1 0 0 1-.75-1.14c-.14-.35-.3-.88-.34-1.85C3.81 14.97 3.8 14.65 3.8 12s.01-2.97.06-4.02c.04-.97.2-1.5.34-1.85.18-.46.4-.79.75-1.14.35-.35.68-.57 1.14-.75.35-.14.88-.3 1.85-.34C9.03 3.81 9.35 3.8 12 3.8zm0 3.05a5.15 5.15 0 1 0 0 10.3 5.15 5.15 0 0 0 0-10.3zm0 8.5a3.35 3.35 0 1 1 0-6.7 3.35 3.35 0 0 1 0 6.7zm6.55-8.7a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z"/></svg>
         </a>
     </div>
-
-    <!-- ===== HEADER (mantido como está hoje) ===== -->
-    <section id="hero" style="padding: 0;">
+    <!-- SUBMENU DO TORNEIO: aparece somente dentro das páginas do torneio, para navegar só entre elas -->
+    <div class="tournament-submenu tourney-tab">
+        <button class="nav-btn tourney-tab" id="navBtnMatches" onclick="switchTab('page-matches', this)">Tavernas of Mortals</button>
+        <button class="nav-btn tourney-tab" id="navBtnBracket" onclick="switchTab('page-bracket', this)">Demigods & Titans</button>
+        <button class="nav-btn tourney-tab" id="navBtnMaps" onclick="switchTab('page-maps', this)">Estatísticas de Mapas</button>
+        <div class="tourney-tab" style="width: 1px; height: 30px; background: var(--border-color); margin: 0 10px;"></div>
+        <button class="nav-btn btn-save admin-only tourney-tab" onclick="saveTournament()">Salvar na Nuvem <span class="loader" id="saveLoader"></span></button>
+        <button class="nav-btn btn-reset admin-only tourney-tab" onclick="resetTournament()">Resetar</button>
+        <button class="btn-copy admin-only tourney-tab" onclick="copiarLinkPublico(this)" title="Copiar link para os espectadores">Link Público</button>
+    </div>
+    <!-- MENU LATERAL K.M.P.S -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="fecharMenuLateral()"></div>
+    <div id="sidebarMenu" class="sidebar-menu">
+        <button class="sidebar-close" onclick="fecharMenuLateral()" title="Fechar">&times;</button>
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">⚔</div>
+            <div class="sidebar-brand-text">K.M.P.S</div>
+            <div class="sidebar-brand-sub">Todos os nossos campeonatos</div>
+        </div>
+        <div class="sidebar-section-title">Torneios</div>
+        <div class="sidebar-tournament-list">
+            <button class="sidebar-tournament-item active-tournament" onclick="voltarParaPainelPrincipal()">
+                <span class="sidebar-tournament-live-dot"></span>
+                <div>
+                    <div class="sidebar-tournament-name">Tavernas of Demigods &amp; Titans</div>
+                    <div class="sidebar-tournament-status">Em andamento</div>
+                </div>
+            </button>
+            <button class="sidebar-tournament-item disabled" disabled>
+                <div>
+                    <div class="sidebar-tournament-name">Próximo Torneio</div>
+                    <div class="sidebar-tournament-status">Em breve</div>
+                </div>
+            </button>
+            <button class="sidebar-tournament-item disabled" disabled>
+                <div>
+                    <div class="sidebar-tournament-name">Próximo Torneio</div>
+                    <div class="sidebar-tournament-status">Em breve</div>
+                </div>
+            </button>
+        </div>
+        <div class="sidebar-section-title">Hall da Fama</div>
+        <div class="sidebar-tournament-list">
+            <button class="sidebar-tournament-item sidebar-trophy-link" onclick="abrirSalaDeTrofeus()">
+                🏆
+                <div>
+                    <div class="sidebar-tournament-name">Sala de Troféus</div>
+                    <div class="sidebar-tournament-status">Campeões de todas as eras</div>
+                </div>
+            </button>
+        </div>
+        <div class="sidebar-section-title admin-only">Integração</div>
+        <div class="sidebar-tournament-list admin-only">
+            <button class="sidebar-tournament-item" id="btnSincronizarChallonge" onclick="sincronizarComChallonge()">
+                🔗
+                <div>
+                    <div class="sidebar-tournament-name">Sincronizar com Challonge</div>
+                    <div class="sidebar-tournament-status">Importa grupos + chave (somente leitura)</div>
+                </div>
+            </button>
+        </div>
+        <div class="sidebar-section-title">Recursos</div>
+        <div class="sidebar-tournament-list">
+            <a class="sidebar-tournament-item" href="https://matchsync.netlify.app/t/f4341552-0d3e-4ec7-bf74-d2bfc7e795cc" target="_blank" rel="noopener noreferrer">
+                📅
+                <div>
+                    <div class="sidebar-tournament-name">Calendário dos Jogos</div>
+                    <div class="sidebar-tournament-status">Horários e agenda • MatchSync</div>
+                </div>
+                <span class="sidebar-external-icon">↗</span>
+            </a>
+            <a class="sidebar-tournament-item" href="https://aprendendoage.com/" target="_blank" rel="noopener noreferrer">
+                📖
+                <div>
+                    <div class="sidebar-tournament-name">Aprendendo AoE</div>
+                    <div class="sidebar-tournament-status">Guias e conteúdo do jogo</div>
+                </div>
+                <span class="sidebar-external-icon">↗</span>
+            </a>
+        </div>
+        <div class="sidebar-section-title">Conta</div>
+        <div class="sidebar-tournament-list">
+            <button class="sidebar-tournament-item viewer-only" onclick="abrirLoginAdmin(); fecharMenuLateral();">
+                🔑
+                <div>
+                    <div class="sidebar-tournament-name">Login Admin</div>
+                    <div class="sidebar-tournament-status">Entrar como administrador</div>
+                </div>
+            </button>
+            <button class="sidebar-tournament-item admin-only" onclick="sairAdmin(); fecharMenuLateral();">
+                🚪
+                <div>
+                    <div class="sidebar-tournament-name">Sair</div>
+                    <div class="sidebar-tournament-status">Encerrar sessão de admin</div>
+                </div>
+            </button>
+        </div>
+        <div class="sidebar-footer">K.M.P.S — Kingdom Of Mortals &amp; Pro Society</div>
+    </div>
+    <!-- MODAL DE LOGIN ADMIN -->
+    <div id="loginModal" class="modal-overlay" onclick="fecharLoginAdmin(event)">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 340px; position: relative;">
+            <button class="modal-close" onclick="fecharLoginAdmin()" title="Fechar">&times;</button>
+            <h3 style="margin-bottom: 20px; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Login Admin</h3>
+            <div class="login-field">
+                <label>E-mail</label>
+                <input type="email" id="loginEmail" autocomplete="username">
+            </div>
+            <div class="login-field">
+                <label>Senha</label>
+                <input type="password" id="loginSenha" autocomplete="current-password" onkeydown="if(event.key==='Enter'){fazerLoginAdmin();}">
+            </div>
+            <button class="action-btn" onclick="fazerLoginAdmin()">Entrar</button>
+            <p class="login-error" id="loginErro">E-mail ou senha inválidos.</p>
+        </div>
+    </div>
+    <!-- INÍCIO -->
+    <div id="page-home" class="container page active">
+        <div id="homeEmbers"></div>
         <div class="home-hero">
             <div class="home-hero-img-wrap">
                 <img src="header.png" alt="K.M.P.S" class="home-hero-img" onerror="this.style.display='none'">
@@ -62,22 +173,18 @@
                 <div class="home-logo-badge"><img src="KMPS_v2.png" alt="KMPS" onerror="this.parentElement.innerHTML='&lt;span&gt;KMPS&lt;/span&gt;'"></div>
             </div>
         </div>
-    </section>
 
-    <!-- ===== CANAIS EM DESTAQUE ===== -->
-    <section id="canais">
-        <div class="container">
-            <h2 class="section-title">Canais em Destaque</h2>
+        <!-- CANAIS EM DESTAQUE -->
+        <div class="home-channels-section" id="secaoCanais">
+            <h3 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin-bottom: 26px;">Canais em Destaque</h3>
             <div class="channels-grid" id="canaisDestaqueList"></div>
         </div>
-    </section>
 
-    <!-- ===== ATUALIZAÇÕES (dentro de um box, com respiro do resto da página) ===== -->
-    <section id="atualizacoes">
-        <div class="container">
-            <h2 class="section-title">Atualizações</h2>
+        <!-- NOTÍCIA EM DESTAQUE -->
+        <div id="secaoAtualizacoes">
+            <h3 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin-bottom: 26px;">Atualizações</h3>
             <div class="updates-box">
-                <div class="featured-news" id="featuredNewsContainer">
+                <div class="featured-news" id="featuredNewsContainer" style="display:none;">
                     <img class="featured-news-img" id="featuredNewsImg" src="" alt="">
                     <div>
                         <h3 class="featured-news-title" id="featuredNewsTitle">Latest News</h3>
@@ -85,60 +192,330 @@
                         <a class="featured-news-link" id="featuredNewsLink" href="#" target="_blank" rel="noopener noreferrer">Ver mais +</a>
                     </div>
                 </div>
+                <p id="featuredNewsFallback" style="display:none; text-align:center; color: var(--text-muted); font-style: italic; margin: 0;">Em breve, novidades por aqui.</p>
             </div>
         </div>
-    </section>
 
-    <!-- ===== NOSSOS PRODUTOS ===== -->
-    <section id="produtos">
-        <div class="container">
-            <h2 class="section-title">Nossos Produtos</h2>
+        <!-- NOSSOS PRODUTOS -->
+        <div style="margin-top: 60px;" id="secaoProdutos">
+            <h3 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin-bottom: 26px;">Nossos Produtos</h3>
             <div class="products-grid" id="produtosList"></div>
-            <div class="ver-mais-wrap"><a href="#" id="produtosVerMaisLink" target="_blank" rel="noopener noreferrer">Ver mais +</a></div>
+            <div style="text-align:center; margin-top:20px;"><a href="#" id="produtosVerMaisLink" target="_blank" rel="noopener noreferrer" style="color:#ff5555; font-size:0.75rem; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; text-decoration:none;">Ver mais +</a></div>
         </div>
-    </section>
 
-    <!-- ===== TORNEIOS — cards quadrados, em carrossel ===== -->
-    <section id="torneios">
-        <div class="container">
-            <h2 class="section-title">Torneios KMPS</h2>
-            <div class="carousel-wrap">
-                <button class="carousel-arrow prev" onclick="scrollarCarrossel('torneiosList', -1)" aria-label="Torneio anterior">‹</button>
-                <div class="carousel-track" id="torneiosList"></div>
-                <button class="carousel-arrow next" onclick="scrollarCarrossel('torneiosList', 1)" aria-label="Próximo torneio">›</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== DICAS — mapas; cada um abre as dicas no torneio Tavernas ===== -->
-    <section id="dicas">
-        <div class="container">
-            <h2 class="section-title">Dicas de Mapas</h2>
+        <!-- DICAS — mapas; cada um abre as dicas daquele mapa no Tavernas -->
+        <div style="margin-top: 60px;" id="secaoDicas">
+            <h3 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin-bottom: 26px;">Dicas</h3>
             <div class="dicas-grid" id="dicasList"></div>
         </div>
-    </section>
 
-    <!-- ===== FERRAMENTAS PARA STREAM (em breve) ===== -->
-    <section id="stream-tools">
-        <div class="container">
-            <h2 class="section-title">Ferramentas para Stream</h2>
+        <!-- FERRAMENTAS PARA STREAM (em breve) -->
+        <div style="margin-top: 60px;" id="secaoStream">
+            <h3 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin-bottom: 26px;">Ferramentas para Stream</h3>
             <div class="placeholder-box">Em breve</div>
         </div>
-    </section>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="site-footer">
-        <div class="footer-bg-carousel" id="footerBgCarousel"></div>
-        <div class="footer-credit">Desenvolvido pela equipe K.M.P.S</div>
-    </footer>
+        <!-- TORNEIOS + RODAPÉ, SOBREPOSTOS À IMAGEM pain_YT.png (carrossel automático com dissolve) -->
+        <div class="home-tourney-footer-wrap">
+            <div id="footerBgCarousel"></div>
+            <div class="home-tourney-footer-content">
+                <!-- TORNEIOS KMPS (carrossel manual, comporta quantos torneios forem publicados) -->
+                <div>
+                    <h3 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin-bottom: 26px;">Torneios KMPS</h3>
+                    <div class="kmps-carousel-wrap">
+                        <button class="kmps-carousel-arrow prev" onclick="scrollarCarrossel('kmpsTorneiosList', -1)" aria-label="Torneio anterior">‹</button>
+                        <div class="kmps-tournaments-grid kmps-carousel-track" id="kmpsTorneiosList"></div>
+                        <button class="kmps-carousel-arrow next" onclick="scrollarCarrossel('kmpsTorneiosList', 1)" aria-label="Próximo torneio">›</button>
+                    </div>
+                </div>
 
-    <script src="js/data.js"></script>
-    <script src="js/carousels.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-        document.getElementById('socialTwitch').href = socialLinks.twitch;
-        document.getElementById('socialYoutube').href = socialLinks.youtube;
-        document.getElementById('socialInstagram').href = socialLinks.instagram;
-    </script>
+                <!-- RODAPÉ: só o crédito da equipe (sem links) -->
+                <div class="home-footer-bottom-group">
+                    <div class="footer">DESENVOLVIDO PELA EQUIPE K.M.P.S</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LISTA DE TORNEIOS -->
+    <div id="page-tournaments-list" class="container page">
+        <h2 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin: 20px 0 30px;">Torneios KMPS</h2>
+        <div class="kmps-tournaments-grid" id="listaTorneiosCompleta" style="margin-bottom: 60px;"></div>
+    </div>
+    <!-- TORNEIO ATUAL -->
+    <div id="page-main" class="container page">
+        <div class="panel admin-only">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+                <h2 style="margin:0;">Configuração de Sorteio</h2>
+                <button class="nav-btn" style="padding: 6px 16px; font-size: 0.7rem;" onclick="toggleSetup()" id="btnToggleSetup">Recolher</button>
+            </div>
+            <div class="setup-grid" id="setupContent">
+                <div><label>Cabeças de Chave (Linha por Linha)</label><textarea id="seedsInput" rows="5" placeholder="Jogador A&#10;Jogador B"></textarea></div>
+                <div><label>Jogadores Regulares (Linha por Linha)</label><textarea id="regularsInput" rows="5" placeholder="Jogador C&#10;Jogador D..."></textarea></div>
+                <div>
+                    <label>Estrutura do Torneio</label>
+                    <div style="display: flex; gap: 10px; align-items: center; background-color: var(--panel-surface); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <label style="margin:0; text-transform:none; letter-spacing:0; flex: 2; font-size: 0.85rem;">Jogadores por Grupo:</label>
+                        <input type="number" id="playersPerGroup" value="3" min="2" style="flex: 1; padding: 8px; margin: 0; text-align: center;">
+                    </div>
+                    <button class="action-btn" style="margin-top:25px;" onclick="gerarTorneio()">Sortear Chaves</button>
+                </div>
+            </div>
+        </div>
+        <div id="groupsSection" style="display:none; margin-top: 40px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                <h2 style="margin:0;">Fase de Grupos (Mortals)</h2>
+                <p class="admin-only" style="font-size:0.7rem; color:var(--text-muted); margin:0; font-style:italic;">Dica: Arraste os jogadores pelo ícone ☰ para trocar de grupo, ou use o ⟳ no card do grupo para recalcular só ele.</p>
+            </div>
+            <div class="groups-grid" id="groupsDisplay"></div>
+        </div>
+        <!-- MVP DO TORNEIO -->
+        <div id="mvpWrapper" style="display:none; align-items:center; gap:18px; margin-top:40px; background:linear-gradient(135deg, rgba(201,58,58,0.1), rgba(201,58,58,0.02)); border:1px solid var(--accent-color); border-radius:14px; padding:20px 28px;">
+            <div style="font-size:2.4rem; filter:drop-shadow(0 0 12px var(--accent-glow));"><span class="crown-float">🏅</span></div>
+            <div>
+                <div style="font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; color:var(--text-muted);">MVP do Torneio</div>
+                <div id="mvpNome" class="champion-shimmer-text" style="font-family:'Cinzel', serif; font-size:1.4rem; font-weight:700;">—</div>
+                <div id="mvpPontos" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;"></div>
+            </div>
+        </div>
+        <!-- RANKING ELO (conta em todos os torneios) -->
+        <div class="panel" style="margin-top: 40px; position: relative; z-index: 2;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+                <h3 style="margin:0; font-size: var(--title-size-md); color: var(--title-color); font-family: 'Cinzel', serif; letter-spacing: 2px; font-weight: 600;">🏆 Ranking ELO Geral</h3>
+            </div>
+            <div id="eloContent" style="margin-top: 15px; height: 700px; overflow-y: auto; padding-right: 5px;">
+                <table style="width: 100%; border-spacing: 0 4px;">
+                    <thead><tr><th style="width: 30px; text-align: center; padding: 8px 5px;">#</th><th style="text-align: left; padding: 8px 5px;">Jogador</th><th style="text-align: center; padding: 8px 5px;">Pts</th></tr></thead>
+                    <tbody id="eloTableBody"><tr><td colspan="3" style="text-align:center; color:var(--text-muted); font-style: italic; font-size: 0.8rem; padding: 15px;">Aguardando o início do torneio...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ESTATÍSTICAS GERAIS DE GODS (com filtro de mapa) -->
+        <div class="panel" style="margin-top: 40px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; flex-wrap:wrap; gap:10px;">
+                <h3 style="margin:0; font-size: var(--title-size-md); color: var(--title-color); font-family: 'Cinzel', serif; letter-spacing: 2px; font-weight: 600; display:flex; align-items:center; gap:15px;">
+                    Estatísticas GERAIS
+                    <select id="mapFilter" class="map-select" style="font-size:0.75rem; padding:4px 8px; border-radius:4px; max-width:150px; font-family:'Montserrat', sans-serif;" onchange="atualizarTodosOsGods()">
+                        <option value="ALL">Todos os Mapas</option>
+                    </select>
+                </h3>
+                <button class="nav-btn active" style="padding: 4px 12px; font-size: 0.65rem;" onclick="toggleStats()" id="btnToggleStats">Recolher</button>
+            </div>
+            <div id="statsContent" style="display: block; margin-top: 15px; height: 700px; overflow-y: auto; padding-right: 5px;">
+                <table>
+                    <thead><tr><th style="text-align:left;">God</th><th title="Jogos Jogados">J</th><th title="Vitórias">V</th><th title="Derrotas">D</th><th title="Bans Globais" style="color:var(--danger-color);">B</th><th title="Winrate">WR</th></tr></thead>
+                    <tbody id="godsTable">                        </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="footer">DESENVOLVIDO POR K.M.P.S</div>
+    </div>
+    <!-- PÁGINA DE MAPAS: ESTATÍSTICAS AVANÇADAS IMERSIVAS -->
+    <div id="page-maps" class="page">
+        <!-- Fundo Ambiente Desfocado (mascara as bordas sem cortar a imagem) -->
+        <div id="immersiveMapBgBlur" class="immersive-bg-blur"></div>
+        <!-- Mapa de Fundo -->
+        <div id="immersiveMapBg" class="immersive-bg">
+            <div class="immersive-overlay"></div>
+        </div>
+        <div class="map-vignette"></div>
+        <div id="mapDustLayer"></div>
+        <div id="mainMapUI" class="immersive-content">
+            <!-- Lado Superior (Esquerda e Direita) -->
+            <div class="map-stats-top">
+                <div class="map-info-left">
+                    <h1 id="mapaDestaqueTitulo" class="champion-shimmer-text" style="font-size: var(--title-size-lg); margin: 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); font-family: 'Cinzel', serif; letter-spacing: 2px; line-height:1.1;">Anatólia</h1>
+                    <div style="font-size: 0.75rem; color: #fff; text-transform: uppercase; font-weight: bold; letter-spacing: 1.5px; text-shadow: 1px 1px 4px #000; margin-top: 6px;">Total de Partidas no Mapa: <span id="mapTotalJogos" style="color: var(--accent-color); font-size: 1.05rem; margin-left: 5px;">0</span></div>
+                    <button class="btn-hint" onclick="toggleDicas()">💡 Ver Dicas do Mapa</button>
+                </div>
+                <div id="fadeStatsContainer" class="fade-container map-podium-right">
+                    <!-- PÓDIO TOP 3 INTERATIVO -->
+                    <div id="podiumArea">
+                        <!-- Injetado via JS -->
+                    </div>
+                    <!-- RESTANTE (4º em diante) -->
+                    <div id="otherGodsArea" class="other-gods-list">
+                        <!-- Injetado via JS -->
+                    </div>
+                </div>
+            </div>
+            <!-- Carrossel de Mapas (Rodapé/Dock) -->
+            <div class="map-dock-wrapper">
+                <div class="map-dock-title">Selecione o Terreno</div>
+                <div id="mapThumbSelector" class="map-thumb-slider">
+                    <!-- Thumbnails Injetados via JS -->
+                </div>
+            </div>
+        </div>
+        <!-- OVERLAY DE DICAS (Sem interface, tela cheia) -->
+        <div id="hintContainer">
+            <div id="mapTextosGeraisLayer" class="map-textos-gerais"></div>
+            <div id="mapPinsLayer"></div>
+            <div class="hint-toolbar admin-only">
+                <button class="nav-btn" style="padding:6px 14px; font-size:0.65rem;" onclick="alternarModoEdicaoPins()" id="btnModoEdicaoPins">✎ Editar Dicas</button>
+                <button class="nav-btn" style="padding:6px 14px; font-size:0.65rem; display:none;" onclick="adicionarNovoPin()" id="btnAdicionarPin">📍 Adicionar Pin</button>
+            </div>
+            <button class="btn-fechar-dica" onclick="toggleDicas()">Voltar às Estatísticas</button>
+        </div>
+        <!-- POPUP: INFO / EDIÇÃO DE UM PIN DO MAPA -->
+        <div id="pinModal" class="modal-overlay" onclick="fecharModalPin(event)">
+            <div class="modal-box pin-modal-box" onclick="event.stopPropagation()" style="position: relative;">
+                <button class="modal-close" onclick="fecharModalPin()" title="Fechar">&times;</button>
+                <div id="pinModalView">
+                    <div id="pinViewIcone" class="map-pin-icon" style="width:56px; height:56px; font-size:1.6rem; margin:0 auto 14px;"></div>
+                    <h3 id="pinViewTitulo" style="text-align:center; color:var(--accent-color); font-family:'Cinzel', serif;"></h3>
+                    <p id="pinViewTexto" style="text-align:center; color:#ccc; font-size:0.85rem; margin-top:8px;"></p>
+                    <button class="nav-btn admin-only" style="display:block; margin:16px auto 0; padding:6px 16px; font-size:0.65rem;" onclick="entrarEdicaoDoPinAberto()">✎ Editar este pin</button>
+                </div>
+                <div id="pinModalEdit" style="display:none;">
+                    <h3 style="text-align:center; color:var(--accent-color); font-family:'Cinzel', serif; margin-bottom:16px;">Editar Pin</h3>
+                    <div class="login-field">
+                        <label>Ícone</label>
+                        <div class="icon-picker-trigger" onclick="abrirSeletorIcone(document.getElementById('pinEditIcone').value, (v) => { document.getElementById('pinEditIcone').value = v; atualizarPreviaIconePin(); })">
+                            <div id="pinIconePrevia" class="icon-picker-preview"></div>
+                            <span>Escolher ícone</span>
+                        </div>
+                        <input type="hidden" id="pinEditIcone">
+                    </div>
+                    <div class="login-field">
+                        <label>Título</label>
+                        <input type="text" id="pinEditTitulo" placeholder="Ex: Buff de Força">
+                    </div>
+                    <div class="login-field">
+                        <label>Descrição</label>
+                        <textarea id="pinEditTexto" rows="3" style="width:100%; background-color: var(--panel-surface); color: var(--text-main); border: 1px solid var(--border-color); padding: 12px 15px; border-radius: 8px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; resize:vertical;" placeholder="Explique a dica..."></textarea>
+                    </div>
+                    <div class="login-field">
+                        <label>Número no pin (opcional, ex: 2 minas)</label>
+                        <input type="text" id="pinEditQtd" placeholder="Deixe em branco se não precisar">
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="action-btn" style="flex:1;" onclick="salvarEdicaoPin()">Salvar</button>
+                        <button class="nav-btn btn-reset" style="flex:0 0 auto; padding: 10px 16px;" onclick="excluirPinAberto()">Excluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- POPUP: SELETOR DE ÍCONES (usado no editor de pins e nos textos gerais das dicas) -->
+    <div id="iconPickerModal" class="modal-overlay" onclick="fecharSeletorIcone(event)">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 380px;">
+            <button class="modal-close" onclick="fecharSeletorIcone()" title="Fechar">&times;</button>
+            <h3 style="text-align:center; color:var(--accent-color); font-family:'Cinzel', serif; margin-bottom:14px;">Escolher Ícone</h3>
+            <div id="iconPickerGrid" class="icon-picker-grid"></div>
+            <div class="login-field" style="margin-top:16px;">
+                <label>Ou personalizado (emoji ou URL de imagem)</label>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="iconPickerCustomInput" placeholder="🛡️ ou https://...">
+                    <button class="nav-btn" style="padding:0 14px; flex-shrink:0;" onclick="confirmarIconeCustomizado()">Usar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- SALA DE TROFÉUS -->
+    <div id="page-trophy" class="container page" style="position: relative;">
+        <div id="trophyEmbers"></div>
+        <div class="header-container"><img src="header.png" alt="K.M.P.S" class="header-image" onerror="this.style.display='none'"></div>
+        <h1 class="trophy-hero-title">🏆 <span class="champion-shimmer-text">Sala de Troféus</span> 🏆</h1>
+        <div class="trophy-hero-flourish">⚜ ⚜ ⚜</div>
+        <p style="text-align:center; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 1px; position:relative; z-index:1;">O hall da fama do K.M.P.S — celebrando os campeões de cada era.</p>
+        <div class="trophy-divider"></div>
+        <div class="trophy-grid" id="trophyGrid"></div>
+    </div>
+    <!-- MODAL: ADICIONAR / EDITAR CAMPEONATO -->
+    <div id="campeonatoModal" class="modal-overlay" onclick="fecharModalCampeonato(event)">
+        <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 420px; position: relative;">
+            <button class="modal-close" onclick="fecharModalCampeonato()" title="Fechar">&times;</button>
+            <h3 style="margin-bottom: 20px; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;" id="campeonatoModalTitulo">Adicionar Campeonato</h3>
+            <input type="hidden" id="campeonatoEditId" value="">
+            <div class="login-field">
+                <label>Nome do Campeonato</label>
+                <input type="text" id="campeonatoNome" placeholder="Ex: Briga de Bar">
+            </div>
+            <div class="login-field">
+                <label>Status</label>
+                <select id="campeonatoStatus" onchange="atualizarCamposStatusModal()" style="width:100%; padding:10px; background:#111; border:1px solid var(--border-color); color:var(--text-main); border-radius:6px; font-family:'Montserrat',sans-serif;">
+                    <option value="finalizado">Finalizado</option>
+                    <option value="andamento">Em andamento</option>
+                </select>
+            </div>
+            <div class="login-field">
+                <label>Link do Torneio (opcional)</label>
+                <input type="text" id="campeonatoLink" placeholder="Ex: briga-de-bar.html#page-main">
+                <small style="color: var(--text-muted); font-size: 0.7rem;">Se preenchido, o card desse torneio na Home leva direto pra essa URL, em vez de abrir a Sala de Troféus.</small>
+            </div>
+            <div class="login-field" id="campoCampeaoNome">
+                <label>Nome do Campeão</label>
+                <input type="text" id="campeonatoCampeao" placeholder="Ex: NomeDoJogador">
+            </div>
+            <div class="login-field" id="campoCampeaoImagem">
+                <label>Foto do Campeão (segurando o troféu)</label>
+                <input type="file" id="campeonatoImagemInput" accept="image/*" onchange="preVisualizarImagemCampeonato(event)" style="width:100%; color: var(--text-muted); font-size: 0.75rem;">
+                <img id="campeonatoImagemPreview" style="max-width:100%; max-height:180px; object-fit:cover; border-radius:8px; margin-top:10px; display:none; border: 1px solid var(--border-color);">
+            </div>
+            <button class="action-btn" onclick="salvarCampeonato()">Salvar Campeonato</button>
+            <button class="action-btn" id="btnExcluirCampeonato" style="background:transparent; border:1px solid #ff4d4d; color:#ff4d4d; margin-top:8px; display:none;" onclick="excluirCampeonatoAtual()">Excluir Campeonato</button>
+        </div>
+    </div>
+    <!-- MODAL HEAD-TO-HEAD -->
+    <div id="h2hModal" class="modal-overlay" onclick="fecharHeadToHead(event)">
+        <div class="modal-box h2h-box" onclick="event.stopPropagation()" style="max-width: 480px; position: relative;">
+            <button class="modal-close" onclick="fecharHeadToHead()" title="Fechar">&times;</button>
+            <div style="text-align:center; margin-bottom:18px;">
+                <div style="font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted);">Histórico de Confrontos</div>
+                <h3 id="h2hPlayerName" style="margin:4px 0 10px; color:var(--accent-color);">—</h3>
+                <div id="h2hSummary" class="h2h-summary"></div>
+            </div>
+            <div id="h2hList" class="h2h-list"></div>
+        </div>
+    </div>
+    <!-- TAVERNAS OF MORTALS (GRUPOS) -->
+    <div id="page-matches" class="container page">
+        <h2 class="stage-title">TAVERNAS OF MORTALS</h2>
+        <div id="matchesGroupsContainer" style="margin-top: 20px;"><p style="text-align:center; color:var(--text-muted); font-style: italic;">Aguardando geração dos grupos no painel principal.</p></div>
+        <div class="footer">DESENVOLVIDO POR [CAOK] PAIN</div>
+    </div>
+    <!-- MATA-MATA: DEMIGODS & TITANS -->
+    <div id="page-bracket" class="container page" style="max-width: 1800px;">
+        <div class="header-container"><img src="header.png" alt="Era das Tavernas" class="header-image" onerror="this.style.display='none'"></div>
+        <div class="panel" style="padding: 25px; background: #0c0c0f; border-color: #222;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap:15px; border-bottom: 1px solid #222; padding-bottom: 15px; margin-bottom: 10px;">
+                <h2 style="margin:0;">Mata-Mata Final</h2>
+                <div class="admin-only" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <select id="bracketSize" style="width:110px; margin:0; display:inline-block;">
+                        <!-- Options injetadas dinamicamente -->
+                    </select>
+                    <button class="nav-btn" style="margin:0; padding:8px 12px; background:var(--accent-color); color:#000; border-color:var(--accent-color);" onclick="puxarPromovidos()">Importar Top (Automático)</button>
+                </div>
+            </div>
+            <p class="admin-only" style="font-size:0.7rem; color:var(--text-muted); margin-bottom: 0; text-align: right; font-style: italic;">Dica: Arraste a tela para os lados. Clique nos títulos das rodadas para editar seus nomes.</p>
+            <div id="bracketProgressWrapper" style="margin-top:18px; display:none;">
+                <div style="display:flex; justify-content:space-between; font-size:0.6rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px;">
+                    <span>Progresso do torneio</span>
+                    <span id="bracketProgressLabel">0%</span>
+                </div>
+                <div style="height:6px; background:#141414; border-radius:6px; overflow:hidden; border:1px solid #222;">
+                    <div id="bracketProgressFill" style="height:100%; width:0%; background:linear-gradient(90deg, var(--accent-color), #ffe0e0); box-shadow:0 0 10px var(--accent-glow); transition: width 0.6s ease;"></div>
+                </div>
+            </div>
+            <h2 class="stage-title" style="margin-top: 30px; font-size: 1.5rem;">TAVERNAS OF DEMIGODS & TITANS</h2>
+            <h3 style="color: #4ade80; margin-top: 20px;">WINNERS BRACKET</h3>
+            <div class="bracket-container" id="winnersBracketDisplay"></div>
+            <h3 style="color: var(--danger-color); margin-top: 40px;">LOSERS BRACKET</h3>
+            <div class="bracket-container" id="losersBracketDisplay"></div>
+            <h3 style="color: #c93a3a; margin-top: 40px; text-align: center;">GRAND FINALS</h3>
+            <div class="bracket-container" id="grandFinalsDisplay" style="justify-content: center; min-height: 200px;"></div>
+        </div>
+        <div class="footer">DESENVOLVIDO POR [CAOK] PAIN</div>
+    </div>
+    <!-- MODAL DE DEUSES -->
+    <div id="godModal" class="modal-overlay" onclick="fecharModalDeuses(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h3 style="margin-bottom: 20px; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Selecione o Deus</h3>
+            <div id="godGrid" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;"></div>
+            <button class="action-btn admin-only" style="margin-top: 25px; border-color: var(--danger-color); color: var(--danger-color); background: transparent;" onclick="removerDeusSelecionado()">Remover Deus</button>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
 </body>
 </html>
