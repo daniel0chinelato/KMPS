@@ -80,9 +80,15 @@
             const nomes = Object.keys(mapaImagens).sort();
             lista.innerHTML = nomes.map(nome => {
                 const img = mapaImagens[nome];
-                const url = `tavernas.html?mapa=${encodeURIComponent(nome)}&dicas=1#page-maps`;
-                return `<a class="dica-card" href="${url}" style="background-image:url('${img}')"><span>${escapeHtml(nome)}</span></a>`;
+                return `<a class="dica-card" href="javascript:void(0)" onclick="abrirDicaMapa('${nome.replace(/'/g, "\\'")}')" style="background-image:url('${img}')"><span>${escapeHtml(nome)}</span></a>`;
             }).join('');
+        }
+        function abrirDicaMapa(nome) {
+            irParaPagina('page-maps');
+            setTimeout(() => {
+                atualizarPainelMapas(nome);
+                if (!mostrandoDicas) toggleDicas();
+            }, 250);
         }
         const mapaImagens = {
             "Acrópole": "acropole.jpg",
