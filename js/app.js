@@ -85,8 +85,11 @@
         }
         function abrirDicaMapa(nome) {
             irParaPagina('page-maps');
-            atualizarPainelMapas(nome);
-            if (!mostrandoDicas) toggleDicas();
+            requestAnimationFrame(() => {
+                atualizarPainelMapas(nome);
+                mostrandoDicas = false; // garante estado conhecido antes de abrir
+                toggleDicas();
+            });
         }
         const mapaImagens = {
             "Acrópole": "acropole.jpg",
