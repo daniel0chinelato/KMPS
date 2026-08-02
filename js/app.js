@@ -87,8 +87,18 @@
             irParaPagina('page-maps');
             requestAnimationFrame(() => {
                 atualizarPainelMapas(nome);
-                mostrandoDicas = false; // garante estado conhecido antes de abrir
-                toggleDicas();
+                // Força diretamente o estado "mostrando dicas" (não usa toggle, pra não depender
+                // de estar sincronizado com o estado anterior).
+                const uiContent = document.getElementById('mainMapUI');
+                const hintContainer = document.getElementById('hintContainer');
+                const overlay = document.querySelector('.immersive-overlay');
+                mostrandoDicas = true;
+                if (uiContent) { uiContent.style.opacity = '0'; uiContent.style.pointerEvents = 'none'; }
+                if (hintContainer) hintContainer.classList.add('active');
+                setMapBackground(mapaImagens[nome]);
+                renderizarPinsDoMapa(nome);
+                renderizarTextosGerais(nome);
+                if (overlay) overlay.style.opacity = '0';
             });
         }
         const mapaImagens = {
