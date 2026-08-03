@@ -83,24 +83,58 @@
                 return `<a class="dica-card" href="javascript:void(0)" onclick="abrirDicaMapa('${nome.replace(/'/g, "\\'")}')" style="background-image:url('${img}')"><span>${escapeHtml(nome)}</span></a>`;
             }).join('');
         }
+        // Elementos reais da página de mapas que vamos mover pro popup e devolver depois.
+        const DICAS_IDS_PARA_MOVER = ['immersiveMapBgBlur', 'immersiveMapBg', 'mapVignette', 'mapDustLayer', 'hintContainer'];
+        let dicasElementosOriginais = null; // guarda { id, parent, nextSibling } pra devolver no lugar certo
         function abrirDicaMapa(nome) {
-            irParaPagina('page-maps');
-            requestAnimationFrame(() => {
-                atualizarPainelMapas(nome);
-                // Força diretamente o estado "mostrando dicas" (não usa toggle, pra não depender
-                // de estar sincronizado com o estado anterior).
-                const uiContent = document.getElementById('mainMapUI');
-                const hintContainer = document.getElementById('hintContainer');
-                const overlay = document.querySelector('.immersive-overlay');
-                mostrandoDicas = true;
-                if (uiContent) { uiContent.style.opacity = '0'; uiContent.style.pointerEvents = 'none'; }
-                if (hintContainer) hintContainer.classList.add('active');
-                setMapBackground(mapaImagens[nome]);
-                renderizarPinsDoMapa(nome);
-                renderizarTextosGerais(nome);
-                if (overlay) overlay.style.opacity = '0';
+            const overlay = document.getElementById('dicasModalOverlay');
+            const destino = document.getElementById('dicasModalContent');
+            if (!overlay || !destino) return;
+
+            // Guarda onde cada elemento estava, pra conseguir devolver certinho.
+            if (!dicasElementosOriginais) {
+                dicasElementosOriginais = DICAS_IDS_PARA_MOVER.map(id => {
+                    const el = document.getElementById(id);
+                    return el ? { id, parent: el.parentNode, nextSibling: el.nextSibling } : null;
+                }).filter(Boolean);
+            }
+            // Move os elementos reais pro popup.
+            DICAS_IDS_PARA_MOVER.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) destino.appendChild(el);
             });
+
+            mapaAtivoGlobal = nome;
+            setMapBackground(mapaImagens[nome]);
+            renderizarPinsDoMapa(nome);
+            renderizarTextosGerais(nome);
+            document.getElementById('hintContainer').classList.add('active');
+            mostrandoDicas = true;
+            // Dentro do popup não faz sentido "voltar às estatísticas" (não tem essa tela aqui) — o botão fecha o popup.
+            const btnVoltar = destino.querySelector('.btn-fechar-dica');
+            if (btnVoltar) btnVoltar.setAttribute('onclick', 'fecharDicaMapa()');
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
+        function fecharDicaMapa() {
+            const overlay = document.getElementById('dicasModalOverlay');
+            if (!overlay) return;
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            document.getElementById('hintContainer').classList.remove('active');
+            mostrandoDicas = false;
+            const btnVoltar = document.querySelector('#hintContainer .btn-fechar-dica');
+            if (btnVoltar) btnVoltar.setAttribute('onclick', 'toggleDicas()');
+            // Devolve os elementos pro lugar de origem, na página de mapas.
+            if (dicasElementosOriginais) {
+                dicasElementosOriginais.forEach(({ id, parent, nextSibling }) => {
+                    const el = document.getElementById(id);
+                    if (el && parent) parent.insertBefore(el, nextSibling);
+                });
+            }
+        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharDicaMapa(); });
         const mapaImagens = {
             "Acrópole": "acropole.jpg",
             "Anatólia": "anatolia.jpg",
