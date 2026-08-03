@@ -95,13 +95,12 @@
         /* ===== FERRAMENTAS PARA STREAM (placeholder) ===== */
         .placeholder-box { text-align: center; padding: 50px 20px; border: 1px dashed var(--border-color); border-radius: 12px; color: var(--text-muted); font-style: italic; letter-spacing: 1px; }
         /* ===== POPUP DE DICAS (mostra o visual real da página de mapas) ===== */
-        .dicas-modal-overlay { position: fixed; inset: 0; z-index: 5000; background: rgba(4,4,6,0.94); display: none; align-items: center; justify-content: center; padding: 30px; }
+        .dicas-modal-overlay { position: fixed; inset: 0; z-index: 5000; background: #050506; display: none; align-items: center; justify-content: center; padding: 0; }
         .dicas-modal-overlay.active { display: flex; animation: dicasFadeIn 0.25s ease; }
         @keyframes dicasFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .dicas-modal-content { position: relative; width: 100%; max-width: 1200px; height: 88vh; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 30px 80px rgba(0,0,0,0.7); background: #050506; }
+        .dicas-modal-content { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: #050506; }
         .dicas-modal-close { position: absolute; top: 18px; right: 18px; z-index: 200; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.6); color: var(--text-main); font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
         .dicas-modal-close:hover { background: var(--hover-color); border-color: var(--hover-color); }
-        @media (max-width: 700px) { .dicas-modal-content { height: 92vh; } }
        /* ===== TORNEIOS KMPS (cards grandes com imagem) ===== */
 .kmps-tournaments-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .kmps-tournament-card { position: relative; aspect-ratio: 1/1; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--text-main); background: radial-gradient(ellipse at center, #16110a 0%, #0a0a0a 75%); transition: 0.25s; }
