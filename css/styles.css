@@ -45,11 +45,10 @@
         .header-container { width: 100%; margin: 20px 0 40px 0; display: flex; justify-content: center; align-items: center; }
         .header-image { width: 100%; height: auto; max-height: 350px; object-fit: cover; border-radius: 12px; }
         /* ===== HERO DA PÁGINA INÍCIO (largura total, sai do container) ===== */
-        .home-hero { position: relative; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; height: 860px; overflow: visible; margin-bottom: 90px; margin-top: 0; z-index: 1; }
-        .home-hero-img-wrap { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+        .home-hero { position: relative; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; height: auto; overflow: visible; margin-bottom: 90px; margin-top: 0; z-index: 1; }
+        .home-hero-img-wrap { position: relative; overflow: hidden; z-index: 0; line-height: 0; }
         .home-hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 220px; background: linear-gradient(180deg, transparent 0%, var(--bg-color) 100%); z-index: 1; pointer-events: none; }
-        .home-hero-img { width: 100%; height: 100%; object-fit: cover; animation: heroImgZoom 24s ease-in-out infinite alternate; }
-        @keyframes heroImgZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
+        .home-hero-img { width: 100%; height: auto; display: block; }
         .home-hero-content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 20px; z-index: 2; }
         .home-hero-title { font-size: 3rem; letter-spacing: 7px; margin: 0; text-shadow: 0 4px 25px rgba(0,0,0,0.85); }
         .home-hero-sub { color: #ddd; font-size: var(--text-size-body); letter-spacing: 1.5px; margin-top: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9); max-width: 580px; }
@@ -179,7 +178,6 @@
 .home-sites-footer-links a:hover { color: var(--hover-color); text-decoration: underline; }
 
 @media (max-width: 700px) { 
-    .home-hero { height: 380px; } 
     .home-hero-title { font-size: 1.8rem; letter-spacing: 4px; } 
 }
 
