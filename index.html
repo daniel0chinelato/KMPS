@@ -209,6 +209,13 @@
             <div class="dicas-grid" id="dicasList"></div>
         </div>
 
+        <!-- POPUP DE DICAS — mostra o visual real da página de mapas (movido pra cá quando abre) -->
+        <div class="dicas-modal-overlay" id="dicasModalOverlay" onclick="if(event.target===this) fecharDicaMapa()">
+            <div class="dicas-modal-content" id="dicasModalContent">
+                <button class="dicas-modal-close" onclick="fecharDicaMapa()" aria-label="Fechar">✕</button>
+            </div>
+        </div>
+
         <!-- FERRAMENTAS PARA STREAM (em breve) -->
         <div style="margin-top: 60px;" id="secaoStream">
             <h3 class="home-panel-title home-panel-title-center" style="text-align:center; padding-bottom:0; margin-bottom: 26px;">Ferramentas para Stream</h3>
@@ -318,7 +325,7 @@
         <div id="immersiveMapBg" class="immersive-bg">
             <div class="immersive-overlay"></div>
         </div>
-        <div class="map-vignette"></div>
+        <div class="map-vignette" id="mapVignette"></div>
         <div id="mapDustLayer"></div>
         <div id="mainMapUI" class="immersive-content">
             <!-- Lado Superior (Esquerda e Direita) -->
