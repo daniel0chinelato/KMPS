@@ -84,7 +84,7 @@
             }).join('');
         }
         // Elementos reais da página de mapas que vamos mover pro popup e devolver depois.
-        const DICAS_IDS_PARA_MOVER = ['immersiveMapBgBlur', 'immersiveMapBg', 'mapVignette', 'mapDustLayer', 'hintContainer'];
+        const DICAS_IDS_PARA_MOVER = ['immersiveMapBgBlur', 'immersiveMapBg', 'mapVignette', 'mapDustLayer', 'hintContainer', 'pinModal'];
         let dicasElementosOriginais = null; // guarda { id, parent, nextSibling } pra devolver no lugar certo
         function abrirDicaMapa(nome) {
             const overlay = document.getElementById('dicasModalOverlay');
