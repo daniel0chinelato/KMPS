@@ -79,10 +79,28 @@
             if (!lista) return;
             const nomes = Object.keys(mapaImagens).sort();
             lista.innerHTML = nomes.map(nome => {
-                const img = mapaImagens[nome];
-                return `<a class="dica-card" href="javascript:void(0)" onclick="abrirDicaMapa('${nome.replace(/'/g, "\\'")}')" style="background-image:url('${img}')"><span>${escapeHtml(nome)}</span></a>`;
+                const img = dicaCardImagens[nome] || mapaImagens[nome];
+                return `<a class="dica-card" href="javascript:void(0)" onclick="abrirDicaMapa('${nome.replace(/'/g, "\\'")}')"><span class="dica-card-bg" style="background-image:url('${img}')"></span><span>${escapeHtml(nome)}</span></a>`;
             }).join('');
         }
+        // Imagens usadas SÓ nos cards da seção "Dicas" (grid de mapas).
+        const dicaCardImagens = {
+            "Acrópole": "acropole_q.jpg",
+            "Anatólia": "anatolia_q.jpg",
+            "Coração de Tenochtitlán": "coracao.jpg",
+            "Elísio": "elisio_q.jpg",
+            "Estepe": "estepe_q.jpg",
+            "Floresta das Trevas": "trevas.jpg",
+            "Lago Fantasma": "fantasma.jpg",
+            "Mediterrâneo": "mediterraneo_q.jpg",
+            "Muspelheim": "muspelheim_q.jpg",
+            "Oásis": "oasis_q.jpg",
+            "Pântano": "pantano_q.jpg",
+            "Savana": "savanna.jpg",
+            "Senjogahara": "senjogahara_q.jpg",
+            "Tundra": "tundra_q.jpg",
+            "Vaus do Nilo": "nilo.jpg"
+        };
         // Elementos reais da página de mapas que vamos mover pro popup e devolver depois.
         const DICAS_IDS_PARA_MOVER = ['immersiveMapBgBlur', 'immersiveMapBg', 'mapVignette', 'mapDustLayer', 'hintContainer', 'pinModal'];
         let dicasElementosOriginais = null; // guarda { id, parent, nextSibling } pra devolver no lugar certo
