@@ -79,7 +79,7 @@
             if (!lista) return;
             const nomes = Object.keys(mapaImagens).sort();
             lista.innerHTML = nomes.map(nome => {
-                const img = mapaImagens[nome];
+                const img = dicaCardImagens[nome] || mapaImagens[nome];
                 return `<a class="dica-card" href="javascript:void(0)" onclick="abrirDicaMapa('${nome.replace(/'/g, "\\'")}')"><span class="dica-card-bg" style="background-image:url('${img}')"></span><span>${escapeHtml(nome)}</span></a>`;
             }).join('');
         }
@@ -136,6 +136,25 @@
         }
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharDicaMapa(); });
         const mapaImagens = {
+            "Acrópole": "acropole.jpg",
+            "Anatólia": "anatolia.jpg",
+            "Coração de Tenochtitlán": "coracao.jpg",
+            "Elísio": "elisio.jpg",
+            "Estepe": "estepe.jpg",
+            "Floresta das Trevas": "floresta das trevas.jpg",
+            "Lago Fantasma": "lago fantasma.jpg",
+            "Mediterrâneo": "mediterraneo.jpg",
+            "Muspelheim": "muspelheim.jpg",
+            "Oásis": "oasis.jpg",
+            "Pântano": "pantano.jpg",
+            "Savana": "savana.jpg",
+            "Senjogahara": "senjogahara.jpg",
+            "Tundra": "tundra.jpg",
+            "Vaus do Nilo": "vaus do nilo.jpg"
+        };
+        // Imagens usadas SÓ nas miniaturas dos cards da seção "Dicas" (grid de mapas).
+        // O fundo que abre ao clicar continua usando mapaImagens (imagem original).
+        const dicaCardImagens = {
             "Acrópole": "acropole_q.jpg",
             "Anatólia": "anatolia_q.jpg",
             "Coração de Tenochtitlán": "coracao_q.jpg",
