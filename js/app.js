@@ -79,28 +79,10 @@
             if (!lista) return;
             const nomes = Object.keys(mapaImagens).sort();
             lista.innerHTML = nomes.map(nome => {
-                const img = dicaCardImagens[nome] || mapaImagens[nome];
+                const img = mapaImagens[nome];
                 return `<a class="dica-card" href="javascript:void(0)" onclick="abrirDicaMapa('${nome.replace(/'/g, "\\'")}')"><span class="dica-card-bg" style="background-image:url('${img}')"></span><span>${escapeHtml(nome)}</span></a>`;
             }).join('');
         }
-        // Imagens usadas SÓ nos cards da seção "Dicas" (grid de mapas).
-        const dicaCardImagens = {
-            "Acrópole": "acropole_q.jpg",
-            "Anatólia": "anatolia_q.jpg",
-            "Coração de Tenochtitlán": "coracao_q.jpg",
-            "Elísio": "elisio_q.jpg",
-            "Estepe": "estepe_q.jpg",
-            "Floresta das Trevas": "trevas_q.jpg",
-            "Lago Fantasma": "fantasma_q.jpg",
-            "Mediterrâneo": "mediterraneo_q.jpg",
-            "Muspelheim": "muspelheim_q.jpg",
-            "Oásis": "oasis_q.jpg",
-            "Pântano": "pantano_q.jpg",
-            "Savana": "savanna_q.jpg",
-            "Senjogahara": "senjogahara_q.jpg",
-            "Tundra": "tundra_q.jpg",
-            "Vaus do Nilo": "nilo_q.jpg"
-        };
         // Elementos reais da página de mapas que vamos mover pro popup e devolver depois.
         const DICAS_IDS_PARA_MOVER = ['immersiveMapBgBlur', 'immersiveMapBg', 'mapVignette', 'mapDustLayer', 'hintContainer', 'pinModal'];
         let dicasElementosOriginais = null; // guarda { id, parent, nextSibling } pra devolver no lugar certo
@@ -154,21 +136,21 @@
         }
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharDicaMapa(); });
         const mapaImagens = {
-            "Acrópole": "acropole.jpg",
-            "Anatólia": "anatolia.jpg",
-            "Coração de Tenochtitlán": "coracao.jpg",
-            "Elísio": "elisio.jpg",
-            "Estepe": "estepe.jpg",
-            "Floresta das Trevas": "floresta das trevas.jpg",
-            "Lago Fantasma": "lago fantasma.jpg",
-            "Mediterrâneo": "mediterraneo.jpg",
-            "Muspelheim": "muspelheim.jpg",
-            "Oásis": "oasis.jpg",
-            "Pântano": "pantano.jpg",
-            "Savana": "savana.jpg",
-            "Senjogahara": "senjogahara.jpg",
-            "Tundra": "tundra.jpg",
-            "Vaus do Nilo": "vaus do nilo.jpg"
+            "Acrópole": "acropole_q.jpg",
+            "Anatólia": "anatolia_q.jpg",
+            "Coração de Tenochtitlán": "coracao_q.jpg",
+            "Elísio": "elisio_q.jpg",
+            "Estepe": "estepe_q.jpg",
+            "Floresta das Trevas": "trevas_q.jpg",
+            "Lago Fantasma": "fantasma_q.jpg",
+            "Mediterrâneo": "mediterraneo_q.jpg",
+            "Muspelheim": "muspelheim_q.jpg",
+            "Oásis": "oasis_q.jpg",
+            "Pântano": "pantano_q.jpg",
+            "Savana": "savanna_q.jpg",
+            "Senjogahara": "senjogahara_q.jpg",
+            "Tundra": "tundra_q.jpg",
+            "Vaus do Nilo": "nilo_q.jpg"
         };
         const listaMapas = Object.keys(mapaImagens).sort();
         // ===== SEGURANÇA: escapa texto antes de inserir via innerHTML =====
