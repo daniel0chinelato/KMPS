@@ -87,19 +87,19 @@
         const dicaCardImagens = {
             "Acrópole": "acropole_q.jpg",
             "Anatólia": "anatolia_q.jpg",
-            "Coração de Tenochtitlán": "coracao.jpg",
+            "Coração de Tenochtitlán": "coracao_q.jpg",
             "Elísio": "elisio_q.jpg",
             "Estepe": "estepe_q.jpg",
-            "Floresta das Trevas": "trevas.jpg",
-            "Lago Fantasma": "fantasma.jpg",
+            "Floresta das Trevas": "trevas_q.jpg",
+            "Lago Fantasma": "fantasma_q.jpg",
             "Mediterrâneo": "mediterraneo_q.jpg",
             "Muspelheim": "muspelheim_q.jpg",
             "Oásis": "oasis_q.jpg",
             "Pântano": "pantano_q.jpg",
-            "Savana": "savanna.jpg",
+            "Savana": "savanna_q.jpg",
             "Senjogahara": "senjogahara_q.jpg",
             "Tundra": "tundra_q.jpg",
-            "Vaus do Nilo": "nilo.jpg"
+            "Vaus do Nilo": "nilo_q.jpg"
         };
         // Elementos reais da página de mapas que vamos mover pro popup e devolver depois.
         const DICAS_IDS_PARA_MOVER = ['immersiveMapBgBlur', 'immersiveMapBg', 'mapVignette', 'mapDustLayer', 'hintContainer', 'pinModal'];
