@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>K.M.P.S | Comunidade de Torneios de Age of Mythology</title>
     <meta name="description" content="K.M.P.S — comunidade de torneios de Age of Mythology: Retold. Acompanhe os torneios, chaveamentos, ranking ELO, canais parceiros e produtos oficiais.">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/jpeg" href="favicon.jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -372,6 +372,13 @@
                     <div id="pinViewIcone" class="map-pin-icon" style="width:56px; height:56px; font-size:1.6rem; margin:0 auto 14px;"></div>
                     <h3 id="pinViewTitulo" style="text-align:center; color:var(--accent-color); font-family:'Cinzel', serif;"></h3>
                     <p id="pinViewTexto" style="text-align:center; color:#ccc; font-size:0.85rem; margin-top:8px;"></p>
+                    <div class="dica-like-row" id="dicaLikeRow">
+                        <button class="dica-like-btn" id="dicaLikeBtn" onclick="curtirDicaAberta()" title="Essa dica ajudou?">
+                            <img src="like.png" class="icon-joinha" alt="Curtir">
+                            <span>Essa dica ajudou?</span>
+                        </button>
+                        <span class="dica-like-count" id="dicaLikeCount">0</span>
+                    </div>
                     <button class="nav-btn admin-only" style="display:block; margin:16px auto 0; padding:6px 16px; font-size:0.65rem;" onclick="entrarEdicaoDoPinAberto()">✎ Editar este pin</button>
                 </div>
                 <div id="pinModalEdit" style="display:none;">
