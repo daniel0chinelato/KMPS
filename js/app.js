@@ -463,7 +463,52 @@
             iconEl.innerHTML = (pin.icon || '').startsWith('http') ? `<img src="${pin.icon}">` : (pin.icon || '📍');
             document.getElementById('pinViewTitulo').textContent = pin.titulo || '(sem título)';
             document.getElementById('pinViewTexto').textContent = pin.texto || '';
+            carregarCurtidaDicaAberta();
             document.getElementById('pinModal').style.display = 'flex';
+        }
+        // ===== CURTIDAS DAS DICAS (sem login) =====
+        // Cada voto é gravado direto num nó separado no Firebase (tavernas_data/dicaLikes),
+        // sem depender do fluxo de salvamento do torneio (que é só pro admin). Assim
+        // qualquer visitante consegue curtir. Uma trava local (localStorage) evita que a
+        // mesma pessoa fique curtindo e descurtindo em loop só pra inflar o número —
+        // não é à prova de burla total, mas resolve o caso comum sem exigir conta.
+        function chaveCurtidaDica(mapa, pinId) { return (mapa + '_' + pinId).replace(/[^a-zA-Z0-9_]/g, '_'); }
+        function jaCurtiuDica(chave) {
+            try { return !!JSON.parse(localStorage.getItem('dicaLikesVotos') || '{}')[chave]; }
+            catch(e) { return false; }
+        }
+        function marcarCurtidaLocal(chave, curtiu) {
+            try {
+                const votos = JSON.parse(localStorage.getItem('dicaLikesVotos') || '{}');
+                if (curtiu) votos[chave] = true; else delete votos[chave];
+                localStorage.setItem('dicaLikesVotos', JSON.stringify(votos));
+            } catch(e) {}
+        }
+        function atualizarUICurtidaDica(chave, total) {
+            const btn = document.getElementById('dicaLikeBtn');
+            const count = document.getElementById('dicaLikeCount');
+            if (btn) btn.classList.toggle('curtido', jaCurtiuDica(chave));
+            if (count) count.textContent = total || 0;
+        }
+        function carregarCurtidaDicaAberta() {
+            if (!pinAbertoId) return;
+            const chave = chaveCurtidaDica(mapaAtivoGlobal, pinAbertoId);
+            atualizarUICurtidaDica(chave, 0);
+            db.ref('tavernas_data/dicaLikes/' + chave).once('value')
+                .then(snap => atualizarUICurtidaDica(chave, snap.val() || 0))
+                .catch(() => {});
+        }
+        function curtirDicaAberta() {
+            if (!pinAbertoId) return;
+            const chave = chaveCurtidaDica(mapaAtivoGlobal, pinAbertoId);
+            const jaCurtiu = jaCurtiuDica(chave);
+            const ref = db.ref('tavernas_data/dicaLikes/' + chave);
+            ref.transaction(atual => Math.max(0, (atual || 0) + (jaCurtiu ? -1 : 1)))
+                .then(res => {
+                    marcarCurtidaLocal(chave, !jaCurtiu);
+                    atualizarUICurtidaDica(chave, res.snapshot.val() || 0);
+                })
+                .catch(() => showToast('Não foi possível registrar seu voto agora.', 'error'));
         }
         function entrarEdicaoDoPinAberto() { if (pinAbertoId) abrirEdicaoPin(pinAbertoId); }
         function abrirEdicaoPin(pinId) {
